@@ -1,7 +1,7 @@
 
 
-# NextJS-Boilerplate!
-This is a basic starter template for a Next.js project with chakra ui support out of the box.
+# MCQ-Client!
+This is the repo for MCQ-Client for pulzion-2022.
 
 ## Getting Started
 To get a local copy of this template up and running on your machine, follow these simple steps.
@@ -11,8 +11,8 @@ To get a local copy of this template up and running on your machine, follow thes
 `sudo sh get-docker.sh`
 
 ### Installation
-- Clone the repo `git clone https://github.com/PICT-ACM-Student-Chapter/nextjs-boilerplate.git`
-- Change the current directory to the template `cd nextjs-boilerplate`
+- Clone the repo `git clone https://github.com/PICT-ACM-Student-Chapter/MCQ-Client.git`
+- Change the current directory to the template `cd MCQ-Client`
 #### Development Environment
 - To get started with development first build the dev containers using the following command `docker-compose -f docker-compose.dev.yml build`
 - The env file being used for development is called `.env.dev`
@@ -41,6 +41,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Project Link: [https://github.com/PICT-ACM-Student-Chapter/nextjs-boilerplate](https://github.com/PICT-ACM-Student-Chapter/nextjs-boilerplate)
+Project Link: [https://github.com/PICT-ACM-Student-Chapter/MCQ-Client](https://github.com/PICT-ACM-Student-Chapter/MCQ-Client)
 
 

@@ -21,7 +21,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     config.headers["Authorization"] = localStorage.getItem(ACCESS_TOKEN)
-      ? `JWT ${localStorage.getItem(ACCESS_TOKEN)}`
+      ? `Token ${localStorage.getItem(ACCESS_TOKEN)}`
       : null;
     return config;
   },

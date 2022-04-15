@@ -15,4 +15,20 @@ const userLogin = async (email, password) => {
   }
 };
 
-export { userLogin };
+const getEvents = async ()=>{
+
+  try{
+    let res = await axiosInstance.get("event/list",{ 
+    })
+    return res.data
+  }
+  catch{
+       console.log("error");
+  }
+
+}
+
+
+
+
+export { userLogin , getEvents };

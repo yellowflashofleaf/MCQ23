@@ -5,79 +5,95 @@ import {
   Flex,
   SimpleGrid,
   useColorModeValue,
-} from '@chakra-ui/react';
-import { SwitchThemeButton } from '../../components/Util/SwitchTheme';
-
-
+  Spinner,
+} from "@chakra-ui/react";
+import { SwitchThemeButton } from "../../components/Util/SwitchTheme";
+import useSWR from "swr";
+import axios from "axios";
+import { apiData } from "../../util/apiData";
+import { getEvents } from "../../api/UserAPI";
 
 const testimonials = [
   {
-    contestName: 'Contest1',
-    contestId:1,
+    contestName: "Contest1",
+    contestId: 1,
     Availablity: true,
-  
   },
   {
-    contestName: 'Contest2',
-    contestId:2,
+    contestName: "Contest2",
+    contestId: 2,
     Availablity: false,
   },
   {
-    contestName: 'Contest3',
-    contestId:3,
+    contestName: "Contest3",
+    contestId: 3,
     Availablity: false,
   },
   {
-    contestName: 'Contest4',
-    contestId:1,
+    contestName: "Contest4",
+    contestId: 1,
     Availablity: true,
   },
 ];
-
-
 
 function TestimonialCard(props) {
   const { contestName, contestId, Availablity } = props;
   return (
     <Flex
-      boxShadow={'lg'}
-      width={'640px'}
-      direction={{ base: 'column-reverse', md: 'row' }}
-      rounded={'xl'}
+      boxShadow={"lg"}
+      width={"640px"}
+      direction={{ base: "column-reverse", md: "row" }}
+      rounded={"xl"}
       p={10}
-      justifyContent={'space-between'}
-      position={'relative'}
-      bg={useColorModeValue('white', 'gray.800')}
-     >
+      justifyContent={"space-between"}
+      position={"relative"}
+      bg={useColorModeValue("white", "gray.800")}
+    >
       <Flex
-        direction={'column'}
-        textAlign={'left'}
-        justifyContent={'space-between'}>
-        <chakra.h1
-        
-         fontWeight={"bold"}
-         fontSize={30}>
-         {contestName}
-        </chakra.h1> 
+        direction={"column"}
+        textAlign={"left"}
+        justifyContent={"space-between"}
+      >
+        <chakra.h1 fontWeight={"bold"} fontSize={30}>
+          {contestName}
+        </chakra.h1>
 
-        <chakra.h3
-         fontWeight={"bold"}
-         fontSize={30}>
-         Status - {Availablity ? 'Available' : 'Not Available'}
-        </chakra.h3> 
-        
-        <Button mt={4} width={40} colorScheme={'teal'}
-        disabled={!Availablity}>Give Contest</Button>
-       
+        <chakra.h3 fontWeight={"bold"} fontSize={30}>
+          Status - {Availablity ? "Available" : "Not Available"}
+        </chakra.h3>
+
+        <Button mt={4} width={40} colorScheme={"teal"} disabled={!Availablity}>
+          Give Contest
+        </Button>
       </Flex>
-    
     </Flex>
   );
 }
 
-export default function GridBlurredBackdrop() {
+export default function availableTests() {
+ 
+
+  function getEvent() {
+    const { data,isLoading,error } = useSWR(`${apiData.url}event/list`, getEvents);
+    console.log(data)
+    return {
+      user: data,
+      isLoading: !error && !data,
+      isError: error,
+    };
+  }
+
+  const { user, isLoading, isError } = getEvent();
+
+  if (isLoading) {
+    return <Spinner size="xl" />;
+  }
+  if (isError) {
+    return <div>Error Loading</div>;
+  }
+
   return (
-    <>
+    <div>
       <Flex align={"flex-end"}>
         <SwitchThemeButton />
       </Flex>
@@ -101,7 +117,6 @@ export default function GridBlurredBackdrop() {
           <chakra.h1
             py={5}
             fontSize={48}
-           
             fontWeight={"bold"}
             color={useColorModeValue("gray.700", "gray.50")}
           >
@@ -119,6 +134,6 @@ export default function GridBlurredBackdrop() {
           ))}
         </SimpleGrid>
       </Flex>
-    </>
+    </div>
   );
 }

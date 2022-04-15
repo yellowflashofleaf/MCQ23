@@ -1,6 +1,6 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
-import { SwitchThemeButton } from '../../components/Util/SwitchTheme';
+import { SwitchThemeButton } from '../../../components/Util/SwitchTheme';
 
 export default function Success() {
   return (

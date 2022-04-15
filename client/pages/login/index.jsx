@@ -9,30 +9,39 @@ import {
   Heading,
   useColorModeValue,
   Center,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
 import { SwitchThemeButton } from "../../components/Util/SwitchTheme";
 import Router from "next/router";
+import { userLogin } from "../../api/UserAPI";
 
 function Loginpage() {
   const re =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const [email, setEmail] = useState("");
-
+  const toast = useToast();
   const [password, setPassword] = useState("");
 
   function validate(email) {
     return re.test(email.toLowerCase());
   }
 
-  function Submit() {
-    if (!validate(email)) {
-      window.alert("Incorrect Email");
-      return;
-    }
-    Router.push("/availableTests");
+  function onSubmit() {
+    // if (!validate(email)) {
+    //   toast({
+    //     title: "Error",
+    //     description: "Invalid Email",
+    //     status: "error",
+    //     duration: 2000,
+    //   });
+    //   return;
+    // }
+    userLogin(email, password).then((res) => {
+      Router.push("/tests");
+    });
   }
 
   return (
@@ -76,7 +85,7 @@ function Loginpage() {
                 _hover={{
                   bg: "blue.500",
                 }}
-                onClick={Submit}
+                onClick={onSubmit}
               >
                 Sign in
               </Button>

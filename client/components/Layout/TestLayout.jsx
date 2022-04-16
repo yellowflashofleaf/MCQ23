@@ -3,6 +3,8 @@ import {
   Flex,
   Text,
   Container,
+  Stack,
+  HStack,
   SimpleGrid,
   useColorModeValue,
   Button,
@@ -15,11 +17,12 @@ import {
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Nav from "../Navbar";
-import Questions from "../Test/Question";
+import Question from "../Test/Question";
 import { fetchData } from "../../api/API";
 import useSWR from "swr";
 import { apiData } from "../../util/apiData";
 import Instruction from "../Test/Instruction";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 function TestLayout() {
   const array = [
@@ -31,13 +34,31 @@ function TestLayout() {
   const { id } = router.query;
   const [alert, setAlert] = useState(document.fullscreenElement);
   const [exitCount, setExitCount] = useState(0);
-  const { data, error } = useSWR(`${apiData.url}api/question/list/${id}`, fetchData);
+  const [questionNumber, setQuestionNumber] = useState(0);
+  const { data, error } = useSWR(
+    `${apiData.url}api/question/list/${id}`,
+    fetchData
+  );
+  console.log(data)
   function toggleFullscreen() {
     document.documentElement.requestFullscreen();
     setAlert(false);
   }
-
-
+  const onClick = (event) => {
+    if (event === "next") {
+      if(questionNumber < data.length - 1){
+      setQuestionNumber(questionNumber + 1);
+      }
+    } else if (event === "previous") {
+      if(questionNumber > 0){
+      setQuestionNumber(questionNumber - 1);
+      }
+    } else if (event === "clear") {
+      //IndexDB reset momentum
+    } else if (event === "review") {
+      // Review Momentum
+    }
+  };
   useEffect(() => {
     document.addEventListener("fullscreenchange", () => {
       setAlert(document.fullscreenElement);
@@ -53,18 +74,21 @@ function TestLayout() {
         <>
           <Nav />
           <Instruction />
-          <Flex h="92.5vh">
+          <Flex h="80.5vh">
             {/* Question section start */}
 
-            <Box>
-              <Questions />
+            <Box w="80%" px="2%">
+              <Question
+                question={data[questionNumber]}
+                questionNumber={questionNumber}
+              />
             </Box>
 
             {/* Question section end */}
 
             {/* Side section for showing legends and question completion status */}
 
-            <Container maxW={"sm"} py={10} ml={64} mt={6} height="auto">
+            <Container w={"20%"} px="2%" py={10} mt={6} height="auto">
               {/*  legends section start*/}
               <SimpleGrid columns={1} spacingX="40px" spacingY="20px">
                 <Box
@@ -85,14 +109,15 @@ function TestLayout() {
                       mb="8"
                       spacingY="10px"
                     >
-                      {array.map((val) => (
+                      {data.map((val,index) => (
                         <Button
                           w="15%"
                           borderRadius={"3rem"}
-                          colorScheme="blue"
-                          key={val}
+                          colorScheme={val.review_status ? 'yellow' : 'blue'}
+                          key={index}
+                          onClick={() => setQuestionNumber(index)}
                         >
-                          {val}
+                          {index + 1}
                         </Button>
                       ))}
                     </SimpleGrid>
@@ -107,6 +132,30 @@ function TestLayout() {
               {/*  legends section end*/}
             </Container>
           </Flex>
+          <HStack ml='3%'>
+            <Button variant="outline" onClick={() => onClick("previous")}>
+              <ArrowBackIcon /> Previous
+            </Button>
+            <Button variant="outline" onClick={() => onClick("next")}>
+              Next <ArrowForwardIcon />
+            </Button>
+            <Button
+              colorScheme="red"
+              variant="solid"
+              onClick={() => onClick("clear")}
+            >
+              {" "}
+              Clear{" "}
+            </Button>
+            <Button
+              colorScheme="yellow"
+              variant="solid"
+              onClick={() => onClick("review")}
+            >
+              {" "}
+              Mark for Review
+            </Button>
+          </HStack>
         </>
       ) : (
         <Alert

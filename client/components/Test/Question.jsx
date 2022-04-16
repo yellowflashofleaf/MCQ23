@@ -37,9 +37,9 @@ const Feature = ({ text, icon, iconBg }) => {
   );
 };
 
-export default function Questions() {
+export default function Question({ question, questionNumber }) {
   return (
-    <Container maxW={"6xl"} ml={20} mt={24}>
+    <Container ml='0' mt={24}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Stack spacing={4}>
           <Text
@@ -52,11 +52,10 @@ export default function Questions() {
             alignSelf={"flex-start"}
             rounded={"md"}
           >
-            Question No
+            Question No {questionNumber + 1}
           </Text>
           <Text fontSize="3xl">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
+            {question?.fk_question.statement}
           </Text>
         </Stack>
 
@@ -85,34 +84,7 @@ export default function Questions() {
           Submit Test
     </Button> */}
 
-      <Box mt={48}>
-        <Container
-          as={Stack}
-          maxW={"6xl"}
-          py={4}
-          direction={{ base: "column", md: "row" }}
-          spacing={4}
-          justify={{ base: "center", md: "space-between" }}
-          align={{ base: "center", md: "center" }}
-        >
-          <HStack>
-            <Button variant="outline">
-              <ArrowBackIcon /> Previous
-            </Button>
-            <Button ml={8} variant="outline">
-              Next <ArrowForwardIcon />
-            </Button>
-            <Button colorScheme="red" variant="solid">
-              {" "}
-              Clear{" "}
-            </Button>
-            <Button colorScheme="yellow" variant="solid">
-              {" "}
-              Mark for Review
-            </Button>
-          </HStack>
-        </Container>
-      </Box>
+     
     </Container>
   );
 }

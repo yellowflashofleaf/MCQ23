@@ -23,7 +23,7 @@ import useSWR from "swr";
 import { apiData } from "../../util/apiData";
 import Instruction from "../Test/Instruction";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-
+import { sendAnswer } from "../../api/TestAPI";
 function TestLayout() {
   const array = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
@@ -35,29 +35,38 @@ function TestLayout() {
   const [alert, setAlert] = useState(document.fullscreenElement);
   const [exitCount, setExitCount] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(0);
+  const [questions, setQuestions] = useState();
   const { data, error } = useSWR(
     `${apiData.url}api/question/list/${id}`,
     fetchData
   );
-  console.log(data)
+  useEffect(() => {
+    setQuestions(data);
+  }, [data]);
+
   function toggleFullscreen() {
     document.documentElement.requestFullscreen();
     setAlert(false);
   }
   const onClick = (event) => {
     if (event === "next") {
-      if(questionNumber < data.length - 1){
-      setQuestionNumber(questionNumber + 1);
+      if (questionNumber < data.length - 1) {
+        setQuestionNumber(questionNumber + 1);
       }
     } else if (event === "previous") {
-      if(questionNumber > 0){
-      setQuestionNumber(questionNumber - 1);
+      if (questionNumber > 0) {
+        setQuestionNumber(questionNumber - 1);
       }
     } else if (event === "clear") {
       //IndexDB reset momentum
     } else if (event === "review") {
       // Review Momentum
     }
+  };
+  const onSelectOption = (option) => {
+    let temp = questions;
+    temp[questionNumber].answer = option;
+    sendAnswer(temp[questionNumber]).then(() => setQuestions(temp));
   };
   useEffect(() => {
     document.addEventListener("fullscreenchange", () => {
@@ -78,10 +87,13 @@ function TestLayout() {
             {/* Question section start */}
 
             <Box w="80%" px="2%">
-              <Question
-                question={data[questionNumber]}
-                questionNumber={questionNumber}
-              />
+              {questions && (
+                <Question
+                  question={questions[questionNumber]}
+                  questionNumber={questionNumber}
+                  onSelectOption={onSelectOption}
+                />
+              )}
             </Box>
 
             {/* Question section end */}
@@ -109,11 +121,11 @@ function TestLayout() {
                       mb="8"
                       spacingY="10px"
                     >
-                      {data.map((val,index) => (
+                      {data.map((val, index) => (
                         <Button
                           w="15%"
                           borderRadius={"3rem"}
-                          colorScheme={val.review_status ? 'yellow' : 'blue'}
+                          colorScheme={val.review_status ? "yellow" : "blue"}
                           key={index}
                           onClick={() => setQuestionNumber(index)}
                         >
@@ -132,7 +144,7 @@ function TestLayout() {
               {/*  legends section end*/}
             </Container>
           </Flex>
-          <HStack ml='3%'>
+          <HStack ml="3%">
             <Button variant="outline" onClick={() => onClick("previous")}>
               <ArrowBackIcon /> Previous
             </Button>

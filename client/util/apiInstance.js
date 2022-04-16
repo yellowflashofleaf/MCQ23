@@ -5,8 +5,8 @@ const ACCESS_TOKEN = "access";
 const REFRESH_TOKEN = "refresh";
 const TOKEN_NOT_VALID = "token_not_valid";
 
-const REFRESH_URL = "";
-const VERIFY_URL = "";
+const REFRESH_URL = "auth/jwt/refresh/";
+const VERIFY_URL = "auth/jwt/verify/";
 
 
 const axiosInstance = axios.create({
@@ -71,7 +71,6 @@ axiosInstance.interceptors.response.use(
             })
             .then((response) => {
               localStorage.setItem(ACCESS_TOKEN, response.data.access);
-              localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
 
               axiosInstance.defaults.headers["Authorization"] =
                 "JWT " + response.data.access;

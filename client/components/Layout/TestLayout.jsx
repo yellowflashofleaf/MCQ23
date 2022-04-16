@@ -215,6 +215,7 @@ function TestLayout() {
           justifyContent="center"
           textAlign="center"
           height="100vh"
+          backgroundColor={useColorModeValue("light.100", "dark.100")}
         >
           <AlertIcon boxSize="40px" mr={0} />
           <AlertTitle mt={4} mb={1} fontSize="lg">

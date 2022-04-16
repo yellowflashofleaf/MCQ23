@@ -53,6 +53,7 @@ function TestLayout() {
   useEffect(() => {
     setQuestions(data);
   }, [data]);
+  useEffect(() => {}, [questions]);
 
   function toggleFullscreen() {
     document.documentElement.requestFullscreen();
@@ -68,15 +69,30 @@ function TestLayout() {
         setQuestionNumber(questionNumber - 1);
       }
     } else if (event === "clear") {
-      //IndexDB reset momentum
+      let temp = [...questions];
+      console.log(questionNumber);
+      temp[questionNumber].answer = null;
+      sendAnswer(temp[questionNumber]).then(() => setQuestions(temp));
     } else if (event === "review") {
-      // Review Momentum
+      let temp = [...questions];
+      console.log(questionNumber);
+      temp[questionNumber].review_status = !temp[questionNumber].review_status;
+      sendAnswer(temp[questionNumber]).then(() => setQuestions(temp));
     }
   };
   const onSelectOption = (option) => {
-    let temp = questions;
+    let temp = [...questions];
     temp[questionNumber].answer = option;
     sendAnswer(temp[questionNumber]).then(() => setQuestions(temp));
+  };
+  const colorFunction = (val) => {
+    if (val.review_status) {
+      return "yellow";
+    } else if (val.answer !== null) {
+      return "green";
+    } else {
+      return "blue";
+    }
   };
   useEffect(() => {
     document.addEventListener("fullscreenchange", () => {
@@ -143,13 +159,14 @@ function TestLayout() {
                       mb="8"
                       spacingY="10px"
                     >
-                      {data.map((val, index) => (
+                      {questions.map((val, index) => (
                         <Button
                           w="15%"
                           borderRadius={"3rem"}
-                          colorScheme={val.review_status ? "yellow" : "blue"}
+                          colorScheme={colorFunction(val)}
                           key={index}
                           onClick={() => setQuestionNumber(index)}
+                          variant={questionNumber !== index ? "outline" : "solid"}
                         >
                           {index + 1}
                         </Button>
@@ -162,8 +179,6 @@ function TestLayout() {
                   </Button>
                 </Box>
               </SimpleGrid>
-
-              {/*  legends section end*/}
             </Container>
           </Flex>
           <HStack ml="3%">

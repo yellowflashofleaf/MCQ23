@@ -9,15 +9,9 @@ import {
   Radio,
   RadioGroup,
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 export default function Question({ question, questionNumber, onSelectOption }) {
-  const [selectedOption, setSelectedOption] = useState(question.answer.toString());
-  useEffect(() => {
-    if (question.answer.toString() !== selectedOption) {
-      setSelectedOption(question.answer.toString());
-    }
-  }, [question.answer]);
   return (
     <Container ml="0" mt={24}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -47,13 +41,12 @@ export default function Question({ question, questionNumber, onSelectOption }) {
             <RadioGroup
               onChange={(e) => {
                 onSelectOption(e);
-                setSelectedOption(e);
               }}
-              value={selectedOption}
+              value={question.answer !== null ? question.answer.toString() : ""}
             >
               <Stack direction="column" spacing={16} mt="16">
                 {question.fk_question.options.map((option, index) => (
-                  <Radio value={index.toString()}>
+                  <Radio key={index} value={index.toString()}>
                     <Text fontWeight={600} fontSize="x-large" ml="4">
                       {option}
                     </Text>

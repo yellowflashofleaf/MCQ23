@@ -39,9 +39,18 @@ function Loginpage() {
     //   });
     //   return;
     // }
-    userLogin(email, password).then((res) => {
-      Router.push("/tests");
-    });
+    userLogin(email, password)
+      .then((res) => {
+        Router.push("/tests");
+      })
+      .catch(() => {
+        toast({
+          title: "Error",
+          description: "Invalid Email or Password",
+          status: "error",
+          duration: 2000,
+        });
+      });
   }
 
   return (

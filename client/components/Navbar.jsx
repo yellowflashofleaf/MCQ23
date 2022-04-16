@@ -2,54 +2,34 @@ import {
   Box,
   Flex,
   Avatar,
-  Link,
   Button,
   Menu,
   MenuButton,
   MenuList,
   useColorModeValue,
-  Stack,
-  useColorMode,
   Center,
   Text,
   HStack,
   Spacer,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon, TimeIcon } from "@chakra-ui/icons";
-
-const NavLink = ({ children }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    href={"#"}
-  >
-    {children}
-  </Link>
-);
+import { SwitchThemeButton } from "./Util/SwitchTheme";
 
 function Nav() {
-  const { colorMode, toggleColorMode } = useColorMode();
 
+  //TODO: Write User Fetching for dynamic Menu Rendering
   return (
     <>
-      <Box bg={useColorModeValue("light.100", "dark.100")} p={4} h='7.5vh'>
-        <Flex h="auto" alignItems={"center"}  w='100%'>
-          <HStack spacing={7} w='100%'>
+      <Box bg={useColorModeValue("light.100", "dark.100")} p={4} h="7.5vh">
+        <Flex h="auto" alignItems={"center"} w="100%">
+          <HStack spacing={7} w="100%">
             <Box>
               <Text fontWeight={800} fontSize="3xl">
                 Pulzion 2022
               </Text>
             </Box>
-            <Spacer/>
-            <Button onClick={toggleColorMode}>
-              {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            </Button>
-
+            <Spacer />
+            <SwitchThemeButton />
+            
             <Menu>
               <MenuButton
                 as={Button}
@@ -66,10 +46,7 @@ function Nav() {
               <MenuList alignItems={"center"}>
                 <br />
                 <Center>
-                  <Avatar
-                    size={"2xl"}
-                    src={"https://avatars.dicebear.com/api/male/username.svg"}
-                  />
+                  <Button>Logout</Button>
                 </Center>
               </MenuList>
             </Menu>

@@ -1,89 +1,31 @@
 import {
   Box,
-  Button,
   chakra,
   Flex,
   SimpleGrid,
   useColorModeValue,
   Spinner,
 } from "@chakra-ui/react";
-import { SwitchThemeButton } from "../../components/Util/SwitchTheme";
+import Nav from '../../components/Navbar'
 import useSWR from "swr";
-import axios from "axios";
 import { apiData } from "../../util/apiData";
-import { getEvents } from "../../api/UserAPI";
+import { getEvents } from "../../components/Layout/UserAPI";
 
-const testimonials = [
-  {
-    contestName: "Contest1",
-    contestId: 1,
-    Availablity: true,
-  },
-  {
-    contestName: "Contest2",
-    contestId: 2,
-    Availablity: false,
-  },
-  {
-    contestName: "Contest3",
-    contestId: 3,
-    Availablity: false,
-  },
-  {
-    contestName: "Contest4",
-    contestId: 1,
-    Availablity: true,
-  },
-];
-
-function TestimonialCard(props) {
-  const { contestName, contestId, Availablity } = props;
-  return (
-    <Flex
-      boxShadow={"lg"}
-      width={"640px"}
-      direction={{ base: "column-reverse", md: "row" }}
-      rounded={"xl"}
-      p={10}
-      justifyContent={"space-between"}
-      position={"relative"}
-      bg={useColorModeValue("white", "gray.800")}
-    >
-      <Flex
-        direction={"column"}
-        textAlign={"left"}
-        justifyContent={"space-between"}
-      >
-        <chakra.h1 fontWeight={"bold"} fontSize={30}>
-          {contestName}
-        </chakra.h1>
-
-        <chakra.h3 fontWeight={"bold"} fontSize={30}>
-          Status - {Availablity ? "Available" : "Not Available"}
-        </chakra.h3>
-
-        <Button mt={4} width={40} colorScheme={"teal"} disabled={!Availablity}>
-          Give Contest
-        </Button>
-      </Flex>
-    </Flex>
-  );
-}
+import TestCard from "../../components/Test/TestCard";
 
 export default function availableTests() {
  
 
   function getEvent() {
-    const { data,isLoading,error } = useSWR(`${apiData.url}event/list`, getEvents);
-    console.log(data)
+    const { data,error } = useSWR(`${apiData.url}event/list`, getEvents);
     return {
-      user: data,
+      data: data,
       isLoading: !error && !data,
       isError: error,
     };
   }
 
-  const { user, isLoading, isError } = getEvent();
+  const { data, isLoading, isError } = getEvent();
 
   if (isLoading) {
     return <Spinner size="xl" />;
@@ -94,26 +36,16 @@ export default function availableTests() {
 
   return (
     <div>
-      <Flex align={"flex-end"}>
-        <SwitchThemeButton />
-      </Flex>
+      <Nav/>
 
       <Flex
         textAlign={"center"}
-        pt={10}
+        pt={3}
         justifyContent={"center"}
         direction={"column"}
         width={"full"}
       >
         <Box width={{ base: "full", sm: "lg", lg: "xl" }} margin={"auto"}>
-          <chakra.h3
-            fontWeight={"bold"}
-            fontSize={20}
-            textTransform={"uppercase"}
-            color={"purple.400"}
-          >
-            Pulzion 22
-          </chakra.h3>
           <chakra.h1
             py={5}
             fontSize={48}
@@ -129,8 +61,8 @@ export default function availableTests() {
           mt={16}
           mx={"auto"}
         >
-          {testimonials.map((cardInfo, index) => (
-            <TestimonialCard {...cardInfo} index={index} />
+          {data.map((cardInfo, index) => (
+            <TestCard {...cardInfo} index={index} />
           ))}
         </SimpleGrid>
       </Flex>

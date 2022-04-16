@@ -9,6 +9,7 @@ import {
   Divider,
   Box,
   Radio,
+  RadioGroup,
   HStack,
 } from "@chakra-ui/react";
 
@@ -38,6 +39,9 @@ const Feature = ({ text, icon, iconBg }) => {
 };
 
 export default function Question({ question, questionNumber }) {
+
+  const [value, setValue] = useState('1')
+
   return (
     <Container ml='0' mt={24}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -66,12 +70,14 @@ export default function Question({ question, questionNumber }) {
             borderColor={useColorModeValue("gray.300", "gray.700")}
           ></Divider>
           <SimpleGrid ml="6" columns={1} spacingX="20px" spacingY="20px">
-            <Stack spacing={16} mt="16">
-              <Feature text="Option1"></Feature>
-              <Feature text="Option2"></Feature>
-              <Feature text="Option3"></Feature>
-              <Feature text="Option4"></Feature>
-            </Stack>
+            <RadioGroup onChange={setValue} value={value}>
+              <Stack direction="column" spacing={16} mt="16">
+                <Radio value="1"> <Text fontWeight={600} fontSize='x-large' ml='4'>First</Text></Radio>
+                <Radio value="2"><Text fontWeight={600} fontSize='x-large' ml='4'>Second</Text></Radio>
+                <Radio value="3"><Text fontWeight={600} fontSize='x-large' ml='4'>Third</Text></Radio>
+                <Radio value="4"><Text fontWeight={600} fontSize='x-large' ml='4'>Fourth</Text> </Radio>
+              </Stack>
+            </RadioGroup>
           </SimpleGrid>
         </Flex>
       </SimpleGrid>

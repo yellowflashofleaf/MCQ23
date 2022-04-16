@@ -13,6 +13,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Spinner,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -36,10 +37,19 @@ function TestLayout() {
   const [exitCount, setExitCount] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questions, setQuestions] = useState();
-  const { data, error } = useSWR(
-    `${apiData.url}api/question/list/${id}`,
-    fetchData
-  );
+  function getQuestion() {
+    const { data, error } = useSWR(
+      `${apiData.url}api/question/list/${id}`,
+      fetchData
+    );
+    return {
+      data: data,
+      isLoading: !error && !data,
+      isError: error,
+    };
+  }
+
+  const { data, isLoading, isError } = getQuestion();
   useEffect(() => {
     setQuestions(data);
   }, [data]);
@@ -76,6 +86,18 @@ function TestLayout() {
       }
     });
   }, [document.fullscreenElement]);
+
+  if (isLoading) {
+    return (
+      <Center>
+        <Spinner size="xl" />;
+      </Center>
+    );
+  }
+
+  if (isError) {
+    return <Center>Questions not found</Center>;
+  }
 
   return (
     <>

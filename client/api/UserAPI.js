@@ -3,32 +3,17 @@ const ACCESS_TOKEN = "access";
 const REFRESH_TOKEN = "refresh";
 const userLogin = async (email, password) => {
   //TODO: Change username to email
-  try {
-    let res = await axiosInstance.post("token/", {
-      username: email,
-      password: password,
-    });
-    localStorage.setItem(ACCESS_TOKEN, res.data.access);
-    localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-  } catch {
-    console.log("error");
-  }
+  let res = await axiosInstance.post("auth/jwt/create", {
+    username: email,
+    password: password,
+  });
+  localStorage.setItem(ACCESS_TOKEN, res.data.access);
+  localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
 };
 
-const getEvents = async ()=>{
+const getEvents = async () => {
+  let res = await axiosInstance.get("api/event/list", {});
+  return res.data;
+};
 
-  try{
-    let res = await axiosInstance.get("event/list",{ 
-    })
-    return res.data
-  }
-  catch{
-       console.log("error");
-  }
-
-}
-
-
-
-
-export { userLogin , getEvents };
+export { userLogin, getEvents };

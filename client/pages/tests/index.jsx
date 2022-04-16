@@ -9,7 +9,7 @@ import {
 import Nav from '../../components/Navbar'
 import useSWR from "swr";
 import { apiData } from "../../util/apiData";
-import { getEvents } from "../../components/Layout/UserAPI";
+import { getEvents } from "../../api/UserAPI";
 
 import TestCard from "../../components/Test/TestCard";
 
@@ -17,7 +17,7 @@ export default function availableTests() {
  
 
   function getEvent() {
-    const { data,error } = useSWR(`${apiData.url}event/list`, getEvents);
+    const { data,error } = useSWR(`${apiData.url}api/event/list`, getEvents);
     return {
       data: data,
       isLoading: !error && !data,

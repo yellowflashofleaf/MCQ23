@@ -38,8 +38,6 @@ const Feature = ({ text, icon, iconBg }) => {
 };
 
 export default function Questions() {
-  const [status, showStatus] = useState(false);
-
   return (
     <Container maxW={"6xl"} ml={20} mt={24}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>

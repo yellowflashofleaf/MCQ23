@@ -1,6 +1,11 @@
 import { Button, chakra, Flex, useColorModeValue } from "@chakra-ui/react";
+import Router from "next/router";
+
 function TestCard(props) {
   const { fk_event, id, started } = props;
+  const onClick = () => {
+    Router.push(`/test/${id}`);
+  };
   return (
     <Flex
       boxShadow={"lg"}
@@ -25,7 +30,17 @@ function TestCard(props) {
           Status - {started ? "Available" : "Not Available"}
         </chakra.h3>
 
-        <Button mt={4} width={40} colorScheme={"teal"} disabled={!started}>
+        <Button
+          mt={4}
+          width={40}
+          colorScheme={"teal"}
+          disabled={
+            (new Date() - new Date(fk_event.end_time)) / 60000 > 0
+              ? true
+              : false
+          }
+          onClick={onClick}
+        >
           Give Contest
         </Button>
       </Flex>

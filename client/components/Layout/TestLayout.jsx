@@ -12,39 +12,47 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Nav from "../Navbar";
 import Questions from "../Test/Question";
+import { fetchData } from "../../api/API";
+import useSWR from "swr";
+import { apiData } from "../../util/apiData";
+import Instruction from "../Test/Instruction";
 
 function TestLayout() {
   const array = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
     22, 23, 24, 25, 26, 27,
   ];
+  const router = useRouter();
 
+  const { id } = router.query;
   const [alert, setAlert] = useState(document.fullscreenElement);
-  const [exitCount,setExitCount] = useState(0)
+  const [exitCount, setExitCount] = useState(0);
+  const { data, error } = useSWR(`${apiData.url}api/question/list/${id}`, fetchData);
   function toggleFullscreen() {
     document.documentElement.requestFullscreen();
     setAlert(false);
   }
+
+
   useEffect(() => {
     document.addEventListener("fullscreenchange", () => {
       setAlert(document.fullscreenElement);
-      if(!document.fullscreenElement)
-      {
-        setExitCount(exitCount+1)
+      if (!document.fullscreenElement) {
+        setExitCount(exitCount + 1);
       }
     });
-  
-  }, [document.fullscreenElement])
-  
+  }, [document.fullscreenElement]);
+
   return (
     <>
       {alert ? (
         <>
           <Nav />
-
+          <Instruction />
           <Flex h="92.5vh">
             {/* Question section start */}
 
@@ -108,7 +116,7 @@ function TestLayout() {
           alignItems="center"
           justifyContent="center"
           textAlign="center"
-          height="200px"
+          height="100vh"
         >
           <AlertIcon boxSize="40px" mr={0} />
           <AlertTitle mt={4} mb={1} fontSize="lg">

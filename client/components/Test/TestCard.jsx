@@ -4,7 +4,7 @@ import Router from "next/router";
 function TestCard(props) {
   const { fk_event, id, started } = props;
   const onClick = () => {
-    Router.push(`/test/${id}`);
+    Router.push(`/test/${fk_event.id}`);
   };
   return (
     <Flex

@@ -11,6 +11,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Spinner
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -31,11 +32,22 @@ function TestLayout() {
   const { id } = router.query;
   const [alert, setAlert] = useState(document.fullscreenElement);
   const [exitCount, setExitCount] = useState(0);
-  const { data, error } = useSWR(`${apiData.url}api/question/list/${id}`, fetchData);
+
   function toggleFullscreen() {
     document.documentElement.requestFullscreen();
     setAlert(false);
   }
+  
+  function getQuestion(){
+    const { data,error } = useSWR(`${apiData.url}api/question/list/${id}`, fetchData);
+    return {
+      data: data,
+      isLoading: !error && !data,
+      isError: error,
+    };
+  }
+  
+  const { data, isLoading, isError } = getQuestion();
 
 
   useEffect(() => {
@@ -46,6 +58,23 @@ function TestLayout() {
       }
     });
   }, [document.fullscreenElement]);
+
+
+  if(isLoading){
+    return (
+      <Center >
+         <Spinner size="xl" />;
+      </Center>
+    );
+  }
+
+  if(isError) {
+    return(
+      <Center>
+         Questions not found
+      </Center>
+    )
+  }
 
   return (
     <>

@@ -10,4 +10,11 @@ const sendAnswer = async (question) => {
   return res.data;
 };
 
-export { fetchQuestions ,sendAnswer};
+
+const handleSubmission = async (id) => {
+  let res = await axiosInstance.get(`api/event/submit/${id}`)
+  return res.data
+
+}
+
+export { fetchQuestions ,sendAnswer, handleSubmission};

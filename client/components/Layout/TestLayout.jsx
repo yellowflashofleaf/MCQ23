@@ -3,7 +3,6 @@ import {
   Flex,
   Text,
   Container,
-  Stack,
   HStack,
   SimpleGrid,
   useColorModeValue,
@@ -16,7 +15,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import Nav from "../Navbar";
 import Question from "../Test/Question";
 import { fetchData } from "../../api/API";
@@ -24,7 +23,7 @@ import useSWR from "swr";
 import { apiData } from "../../util/apiData";
 import Instruction from "../Test/Instruction";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { sendAnswer } from "../../api/TestAPI";
+import { handleSubmission, sendAnswer } from "../../api/TestAPI";
 function TestLayout() {
   const array = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
@@ -37,6 +36,7 @@ function TestLayout() {
   const [exitCount, setExitCount] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questions, setQuestions] = useState();
+
   function getQuestion() {
     const { data, error } = useSWR(
       `${apiData.url}api/question/list/${id}`,
@@ -48,6 +48,23 @@ function TestLayout() {
       isError: error,
     };
   }
+
+  const Submit = () =>{
+       handleSubmission(id).then((res) => {
+        Router.push("/submit");
+      })
+      .catch(() => {
+        toast({
+          title: "Error",
+          description: "Test could'nt be submitted",
+          status: "error",
+          duration: 2000,
+        });
+      });
+       
+  }
+
+
 
   const { data, isLoading, isError } = getQuestion();
   useEffect(() => {
@@ -99,6 +116,19 @@ function TestLayout() {
       setAlert(document.fullscreenElement);
       if (!document.fullscreenElement) {
         setExitCount(exitCount + 1);
+      }
+      if(exitCount==3){
+        handleSubmission(id).then((res) => {
+          Router.push("/autosubmit");
+        })
+        .catch(() => {
+          toast({
+            title: "Error",
+            description: "Test could'nt be submitted",
+            status: "error",
+            duration: 2000,
+          });
+        });
       }
     });
   }, [document.fullscreenElement]);
@@ -173,7 +203,7 @@ function TestLayout() {
                       ))}
                     </SimpleGrid>
                   </Center>
-                  <Button colorScheme={"green"} w="100%">
+                  <Button colorScheme={"green"} w="100%" onClick={Submit}>
                     {" "}
                     Submit Test{" "}
                   </Button>

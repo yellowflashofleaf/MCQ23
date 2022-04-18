@@ -1,10 +1,12 @@
 import axiosInstance from "../util/apiInstance";
 const ACCESS_TOKEN = "access";
 const REFRESH_TOKEN = "refresh";
+import dynamic from 'next/dynamic'
+
 const userLogin = async (email, password) => {
   //TODO: Change username to email
-  let res = await axiosInstance.post("auth/jwt/create", {
-    username: email,
+  let res = await axiosInstance.post("api/login", {
+    email: email,
     password: password,
   });
   localStorage.setItem(ACCESS_TOKEN, res.data.access);
@@ -16,4 +18,10 @@ const getEvents = async () => {
   return res.data;
 };
 
-export { userLogin, getEvents };
+const userLogout = () => {
+  localStorage.removeItem(ACCESS_TOKEN);
+  localStorage.removeItem(REFRESH_TOKEN);
+  
+};
+
+export { userLogin, getEvents, userLogout };

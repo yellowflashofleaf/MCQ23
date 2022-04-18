@@ -13,6 +13,7 @@ import {
   AlertTitle,
   AlertDescription,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import Router, { useRouter } from "next/router";
@@ -25,12 +26,8 @@ import Instruction from "../Test/Instruction";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { handleSubmission, sendAnswer } from "../../api/TestAPI";
 function TestLayout() {
-  const array = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27,
-  ];
   const router = useRouter();
-
+  const toast = useToast();
   const { id } = router.query;
   const [alert, setAlert] = useState(document.fullscreenElement);
   const [exitCount, setExitCount] = useState(0);
@@ -48,24 +45,6 @@ function TestLayout() {
       isError: error,
     };
   }
-
-  const Submit = () =>{
-       handleSubmission(id).then((res) => {
-        Router.push("/submit");
-      })
-      .catch(() => {
-        toast({
-          title: "Error",
-          description: "Test could'nt be submitted",
-          status: "error",
-          duration: 2000,
-        });
-      });
-       
-  }
-
-
-
   const { data, isLoading, isError } = getQuestion();
   useEffect(() => {
     setQuestions(data);
@@ -79,6 +58,8 @@ function TestLayout() {
   const onClick = (event) => {
     if (event === "next") {
       if (questionNumber < data.length - 1) {
+        console.log("esbiasjodef");
+
         setQuestionNumber(questionNumber + 1);
       }
     } else if (event === "previous") {
@@ -95,6 +76,20 @@ function TestLayout() {
       console.log(questionNumber);
       temp[questionNumber].review_status = !temp[questionNumber].review_status;
       sendAnswer(temp[questionNumber]).then(() => setQuestions(temp));
+    } else if (event === "submit") {
+      handleSubmission(id)
+        .then(() => {
+          Router.push("/test/submit");
+        })
+        .catch((err) => {
+          console.log(err);
+          toast({
+            title: "Error",
+            description: "Test could'nt be submitted",
+            status: "error",
+            duration: 2000,
+          });
+        });
     }
   };
   const onSelectOption = (option) => {
@@ -117,18 +112,19 @@ function TestLayout() {
       if (!document.fullscreenElement) {
         setExitCount(exitCount + 1);
       }
-      if(exitCount==3){
-        handleSubmission(id).then((res) => {
-          Router.push("/autosubmit");
-        })
-        .catch(() => {
-          toast({
-            title: "Error",
-            description: "Test could'nt be submitted",
-            status: "error",
-            duration: 2000,
+      if (exitCount === 3) {
+        handleSubmission(id)
+          .then((res) => {
+            Router.push("/autosubmit");
+          })
+          .catch(() => {
+            toast({
+              title: "Error",
+              description: "Test could'nt be submitted",
+              status: "error",
+              duration: 2000,
+            });
           });
-        });
       }
     });
   }, [document.fullscreenElement]);
@@ -196,19 +192,24 @@ function TestLayout() {
                           colorScheme={colorFunction(val)}
                           key={index}
                           onClick={() => setQuestionNumber(index)}
-                          variant={questionNumber !== index ? "outline" : "solid"}
+                          variant={
+                            questionNumber !== index ? "outline" : "solid"
+                          }
                         >
                           {index + 1}
                         </Button>
                       ))}
                     </SimpleGrid>
                   </Center>
-                  <Button colorScheme={"green"} w="100%" onClick={Submit}>
-                    {" "}
-                    Submit Test{" "}
-                  </Button>
                 </Box>
               </SimpleGrid>
+              <Button
+                colorScheme={"green"}
+                w="100%"
+                onClick={() => onClick("submit")}
+              >
+                Submit Test
+              </Button>
             </Container>
           </Flex>
           <HStack ml="3%">

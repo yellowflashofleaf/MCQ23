@@ -4,7 +4,6 @@ const REFRESH_TOKEN = "refresh";
 import dynamic from 'next/dynamic'
 
 const userLogin = async (email, password) => {
-  //TODO: Change username to email
   let res = await axiosInstance.post("api/login", {
     email: email,
     password: password,

@@ -20,7 +20,6 @@ import useSWR from "swr";
 import { apiData } from "../util/apiData";
 import { fetchData } from "../api/API";
 function Nav() {
-  //TODO: Write User Fetching for dynamic Menu Rendering
   const { data } = useSWR(`${apiData.url}auth/users/me`, fetchData, {
     refreshInterval: 0,
   });

@@ -42,7 +42,10 @@ function TestCard(props) {
         textAlign={"left"}
         justifyContent={"space-between"}
       >
-        {/* TODO : Image */}
+        {/* TODO: Check test redirect */}
+        {/* TODO: Code and image in question */}
+        {/* TODO: Event Images */}
+        {/* TODO: Style Countdown and final touchups */}
         <Text fontWeight={"bold"} fontSize={"4xl"}>
           {fk_event.name}
         </Text>

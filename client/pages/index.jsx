@@ -29,8 +29,16 @@ export default function Home() {
                   <Button w="30%">Go to Tests</Button>
                 </Link>
               ) : (
-                <Link href='/login'>
-                <Button w="30%">Login</Button>
+                <Link href="/login">
+                  <Button w="30%">Login</Button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      throw new Error("Sentry Frontend Error");
+                    }}
+                  >
+                    Throw error
+                  </button>
                 </Link>
               )}
             </Center>

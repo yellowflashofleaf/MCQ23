@@ -29,7 +29,9 @@ export default function Home() {
                   <Button w="30%">Go to Tests</Button>
                 </Link>
               ) : (
-                <Button w="30%">Login</Button>
+                <Link href="/login">
+                  <Button w="30%">Login</Button>
+                </Link>
               )}
             </Center>
           </Stack>

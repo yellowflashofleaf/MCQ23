@@ -1,11 +1,31 @@
-import { Button, chakra, Flex, useColorModeValue } from "@chakra-ui/react";
+import {
+  Button,
+  chakra,
+  Flex,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import Router from "next/router";
 
 function TestCard(props) {
-  const { fk_event, id, started } = props;
+  const { fk_event, id, started, finished } = props;
   const onClick = () => {
     Router.push(`/test/${id}`);
   };
+  const checkDates = () => {
+    console.log(new Date(fk_event.start_time));
+    console.log(new Date());
+    console.log(new Date(fk_event.end_time));
+    if (
+      (new Date() - new Date(fk_event.end_time)) / 60000 < 0 &&
+      (new Date() - new Date(fk_event.start_time)) / 60000 > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <Flex
       boxShadow={"lg"}
@@ -22,27 +42,24 @@ function TestCard(props) {
         textAlign={"left"}
         justifyContent={"space-between"}
       >
-        <chakra.h1 fontWeight={"bold"} fontSize={30}>
+        {/* TODO : Image */}
+        <Text fontWeight={"bold"} fontSize={"4xl"}>
           {fk_event.name}
-        </chakra.h1>
-
-        <chakra.h3 fontWeight={"bold"} fontSize={30}>
-          Status - {started ? "Available" : "Not Available"}
-        </chakra.h3>
-
-        <Button
-          mt={4}
-          width={40}
-          colorScheme={"teal"}
-          disabled={
-            (new Date() - new Date(fk_event.end_time)) / 60000 > 0
-              ? true
-              : false
-          }
-          onClick={onClick}
-        >
-          Give Contest
-        </Button>
+        </Text>
+        <Text fontSize={"2xl"}>Time:</Text>
+        {finished ? (
+          <Text mt={3}>Already Attempted</Text>
+        ) : (
+          <Button
+            mt={4}
+            width={40}
+            colorScheme={"teal"}
+            disabled={checkDates() ? false : true}
+            onClick={onClick}
+          >
+            Give Contest
+          </Button>
+        )}
       </Flex>
     </Flex>
   );

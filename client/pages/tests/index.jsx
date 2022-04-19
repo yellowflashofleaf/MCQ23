@@ -31,7 +31,6 @@ export default function availableTests() {
   }
 
   const { data, isLoading, isError } = getEvent();
-
   if (isLoading) {
     return <Spinner size="xl" />;
   }

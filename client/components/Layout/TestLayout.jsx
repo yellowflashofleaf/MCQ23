@@ -25,6 +25,8 @@ import { apiData } from "../../util/apiData";
 import Instruction from "../Test/Instruction";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { handleSubmission, sendAnswer } from "../../api/TestAPI";
+import Countdown from "react-countdown";
+
 function TestLayout() {
   const router = useRouter();
   const toast = useToast();
@@ -33,6 +35,32 @@ function TestLayout() {
   const [exitCount, setExitCount] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questions, setQuestions] = useState();
+
+  // Renderer callback with condition
+  const countDownRenderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      handleSubmission(id)
+        .then(() => {
+          Router.push("/test/autosubmit");
+        })
+        .catch(() => {
+          toast({
+            title: "Error",
+            description: "Test could'nt be submitted",
+            status: "error",
+            duration: 2000,
+          });
+        });
+        return;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          {hours * 60 + minutes}:{seconds}
+        </span>
+      );
+    }
+  };
 
   function getQuestion() {
     const { data, error } = useSWR(
@@ -115,7 +143,7 @@ function TestLayout() {
       if (exitCount === 3) {
         handleSubmission(id)
           .then((res) => {
-            Router.push("/autosubmit");
+            Router.push("/test/autosubmit");
           })
           .catch(() => {
             toast({
@@ -166,6 +194,7 @@ function TestLayout() {
 
             <Container w={"20%"} px="2%" py={10} mt={6} height="auto">
               {/*  legends section start*/}
+              <Countdown date={new Date(data[0].fk_question.fk_event.end_time)} renderer={countDownRenderer}/>
               <SimpleGrid columns={1} spacingX="40px" spacingY="20px">
                 <Box
                   height="auto"
@@ -174,6 +203,9 @@ function TestLayout() {
                   boxShadow={"md"}
                   p={"6"}
                 >
+                  <Text fontSize="lg" fontWeight="bold">
+                   
+                  </Text>
                   <Text fontWeight={600} fontSize="2xl">
                     Questions
                   </Text>

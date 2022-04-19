@@ -34,14 +34,6 @@ export default function Home() {
                   
                 </Link>
               )}
-              <button
-                    type="button"
-                    onClick={() => {
-                      throw new Error("Sentry Frontend Error");
-                    }}
-                  >
-                    Throw error
-                  </button>
             </Center>
           </Stack>
         </h1>

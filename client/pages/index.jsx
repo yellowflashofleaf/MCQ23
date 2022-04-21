@@ -28,7 +28,7 @@ export default function Home() {
               <a href="https://pulzion.in">Pulzion</a> MCQ Platform
             </Text>
             <Center>
-              {localStorage.getItem("access") ? (
+              {localStorage && localStorage.getItem("access") ? (
                 <Link href={"/tests"}>
                   <Button w="30%">Go to Tests</Button>
                 </Link>

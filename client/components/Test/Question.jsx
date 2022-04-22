@@ -29,7 +29,7 @@ export default function Question({ question, questionNumber, onSelectOption }) {
             Question No {questionNumber + 1}
           </Text>
           <Text
-            fontSize="3xl"
+            fontSize="2xl"
             style={{ whiteSpace: "pre-line", textAlign: "left" }}
           >
             {question?.fk_question.statement}

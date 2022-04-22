@@ -6,5 +6,4 @@ const moduleExports = {
     ignoreDuringBuilds: true,
   },
 };
-
 module.exports = moduleExports;

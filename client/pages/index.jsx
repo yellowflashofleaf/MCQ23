@@ -30,7 +30,6 @@ export default function Home() {
               ) : (
                 <Link href="/login">
                   <Button w="30%">Login</Button>
-                  
                 </Link>
               )}
             </Center>

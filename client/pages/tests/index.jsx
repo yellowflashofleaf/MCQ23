@@ -43,9 +43,7 @@ export default function availableTests() {
   return (
     <div>
       <Nav />
-      {userData && userData.current_user_event ? (
-        redirect()
-      ) : (
+      {userData &&
         <Flex
           textAlign={"center"}
           pt={3}
@@ -74,7 +72,7 @@ export default function availableTests() {
             ))}
           </SimpleGrid>
         </Flex>
-      )}
+      }
     </div>
   );
 }

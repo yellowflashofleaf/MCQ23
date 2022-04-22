@@ -19,10 +19,10 @@ function Instruction() {
       <Modal isOpen={open} onClose={handle}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Instructions</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            TEst
+            Test can only be given in online mode over a PC in fullscreen. Exiting fullscreen multiple times may auto-submit the test.
           </ModalBody>
 
           <ModalFooter>

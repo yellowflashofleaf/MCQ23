@@ -13,9 +13,6 @@ function TestCard(props) {
     Router.push(`/test/${id}`);
   };
   const checkDates = () => {
-    console.log(new Date(fk_event.start_time));
-    console.log(new Date());
-    console.log(new Date(fk_event.end_time));
     if (
       (new Date() - new Date(fk_event.end_time)) / 60000 < 0 &&
       (new Date() - new Date(fk_event.start_time)) / 60000 > 0

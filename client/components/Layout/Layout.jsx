@@ -1,27 +1,16 @@
-import {
-  Box,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
-import Navbar from "../Navbar";
+import { useMediaQuery } from 'react-responsive'
 
-
-export const DefaultLayout = ({
-  children,
-}) => {
+export const DefaultLayout = ({ children }) => {
+  const isDesktoporLaptop = useMediaQuery({ query: "(min-width: 1000px)" });
   return (
     <Box>
-      <Grid templateColumns={"repeat(24,1fr)"}>
-        <GridItem  colSpan={2} />
-
-        <GridItem colSpan={20} mr='2%'>
-          <Navbar />
-          {children}
-        </GridItem>
-        <GridItem  colSpan={2} />
-
-      </Grid>
+      {isDesktoporLaptop ? (
+        children
+      ) : (
+        <Box>Please use mobile app or a PC to access the platform.</Box>
+      )}
     </Box>
   );
 };

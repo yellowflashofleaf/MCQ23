@@ -86,7 +86,6 @@ function TestLayout() {
   const onClick = (event) => {
     if (event === "next") {
       if (questionNumber < data.length - 1) {
-        console.log("esbiasjodef");
 
         setQuestionNumber(questionNumber + 1);
       }
@@ -96,12 +95,10 @@ function TestLayout() {
       }
     } else if (event === "clear") {
       let temp = [...questions];
-      console.log(questionNumber);
       temp[questionNumber].answer = null;
       sendAnswer(temp[questionNumber]).then(() => setQuestions(temp));
     } else if (event === "review") {
       let temp = [...questions];
-      console.log(questionNumber);
       temp[questionNumber].review_status = !temp[questionNumber].review_status;
       sendAnswer(temp[questionNumber]).then(() => setQuestions(temp));
     } else if (event === "submit") {
@@ -110,7 +107,6 @@ function TestLayout() {
           Router.push("/test/submit");
         })
         .catch((err) => {
-          console.log(err);
           toast({
             title: "Error",
             description: "Test could'nt be submitted",

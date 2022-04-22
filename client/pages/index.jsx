@@ -5,10 +5,9 @@ import Link from "next/link";
 import useSWR from "swr";
 import { apiData } from "../util/apiData";
 import { fetchData } from "../api/API";
+import { useEffect } from "react";
 export default function Home() {
-  const { data } = useSWR(`${apiData.url}auth/users/me`, fetchData, {
-    refreshInterval: 0,
-  });
+  const { data,error } = useSWR(`${apiData.url}auth/users/me`, fetchData,{ refreshInterval: 1000 });
   return (
     <div className={styles.container}>
       <Head>
@@ -24,7 +23,7 @@ export default function Home() {
               <a href="https://pulzion.in">Pulzion</a> MCQ Platform
             </Text>
             <Center>
-              {data ? (
+              {(data && !error) ? (
                 <Link href={"/tests"}>
                   <Button w="30%">Go to Tests</Button>
                 </Link>

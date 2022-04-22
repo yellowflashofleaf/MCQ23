@@ -39,19 +39,7 @@ function TestLayout() {
   // Renderer callback with condition
   const countDownRenderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
-      handleSubmission(id)
-        .then(() => {
-          Router.push("/test/autosubmit");
-        })
-        .catch(() => {
-          toast({
-            title: "Error",
-            description: "Test could'nt be submitted",
-            status: "error",
-            duration: 2000,
-          });
-        });
-        return;
+      return <></>;
     } else {
       // Render a countdown
       return (
@@ -86,7 +74,6 @@ function TestLayout() {
   const onClick = (event) => {
     if (event === "next") {
       if (questionNumber < data.length - 1) {
-
         setQuestionNumber(questionNumber + 1);
       }
     } else if (event === "previous") {
@@ -130,6 +117,21 @@ function TestLayout() {
       return "blue";
     }
   };
+  const onComplete = () => {
+    handleSubmission(id)
+      .then(() => {
+        Router.push("/test/autosubmit");
+      })
+      .catch(() => {
+        toast({
+          title: "Error",
+          description: "Test could'nt be submitted",
+          status: "error",
+          duration: 2000,
+        });
+      });
+  };
+
   useEffect(() => {
     document.addEventListener("fullscreenchange", () => {
       setAlert(document.fullscreenElement);
@@ -190,7 +192,16 @@ function TestLayout() {
 
             <Container w={"20%"} px="2%" py={10} mt={6} height="auto">
               {/*  legends section start*/}
-              <Countdown date={new Date(data[0].fk_question.fk_event.end_time)} renderer={countDownRenderer}/>
+              <Countdown
+                date={new Date(
+                  data[0].fk_question.fk_event.end_time
+                ).setMinutes(
+                  new Date(data[0].fk_question.fk_event.end_time).getMinutes() -
+                    .8
+                )}
+                renderer={countDownRenderer}
+                onComplete={() => onComplete()}
+              />
               <SimpleGrid columns={1} spacingX="40px" spacingY="20px">
                 <Box
                   height="auto"
@@ -199,9 +210,7 @@ function TestLayout() {
                   boxShadow={"md"}
                   p={"6"}
                 >
-                  <Text fontSize="lg" fontWeight="bold">
-                   
-                  </Text>
+                  <Text fontSize="lg" fontWeight="bold"></Text>
                   <Text fontWeight={600} fontSize="2xl">
                     Questions
                   </Text>

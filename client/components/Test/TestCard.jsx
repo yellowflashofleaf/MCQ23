@@ -17,8 +17,15 @@ function TestCard(props) {
       (new Date() - new Date(fk_event.end_time)) / 60000 < 0 &&
       (new Date() - new Date(fk_event.start_time)) / 60000 > 0
     ) {
+      console.log("To check time in if", fk_event);
       return true;
     } else {
+      console.log(
+        "To check time ine else",
+        fk_event,
+        new Date() - new Date(fk_event.end_time)
+      );
+      console.log("start Time", new Date() - new Date(fk_event.start_time));
       return false;
     }
   };

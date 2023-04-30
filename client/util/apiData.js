@@ -1,6 +1,6 @@
 export const apiData = {
-    url: "https://api.mcq.pulzion.in/",
-}
+  url: "https://api.pulzion.co.in/",
+};
 // /** @type {import('next').NextConfig} */
 // const nextConfig = {
 //     reactStrictMode: true,
@@ -10,6 +10,5 @@ export const apiData = {
 //       ignoreDuringBuilds: true,
 //     },
 //   };
-  
+
 //   module.exports = nextConfig;
-  

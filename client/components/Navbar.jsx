@@ -31,7 +31,7 @@ function Nav() {
           <HStack spacing={7} w="100%">
             <Box>
               <Text fontWeight={800} fontSize="3xl">
-                Pulzion 2022
+                Pulzion 2023
               </Text>
             </Box>
             <Spacer />
